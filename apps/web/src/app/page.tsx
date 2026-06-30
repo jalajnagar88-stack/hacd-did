@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Gem, Key, ShieldCheck, Zap, Users, Lock, Play } from 'lucide-react';
 import { SiteNav } from '@/components/site-nav';
