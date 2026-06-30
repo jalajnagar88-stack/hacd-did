@@ -1,0 +1,40 @@
+{
+  "name": "@pow-agents/sdk",
+  "version": "0.1.0",
+  "description": "Reference SDK for the did:hacd method — Proof-of-Work DIDs for AI agents on HACD.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "did",
+    "decentralized-identity",
+    "hacd",
+    "hacash",
+    "proof-of-work",
+    "ai-agents"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

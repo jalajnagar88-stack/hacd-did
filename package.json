@@ -1,0 +1,27 @@
+{
+  "name": "hacd-did",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Proof-of-Work Decentralized Identifiers for AI agents, built on HACD (Hacash Diamond).",
+  "license": "MIT",
+  "packageManager": "pnpm@11.8.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "dev:web": "pnpm --filter @pow-agents/web dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
+  }
+}
