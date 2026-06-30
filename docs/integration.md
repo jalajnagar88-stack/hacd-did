@@ -32,27 +32,47 @@ signing payload is `agentMessagePayload(content, signedAt, did)` in
 
 ## Plug in Virtuals Protocol ACP
 
-_Future work — Q3 2026 milestone._
-
-Each Virtuals ACP agent could anchor its identity to a `did:hacd` so that an ACP
+Each Virtuals ACP agent can anchor its identity to a `did:hacd` so that an ACP
 counterparty can cryptographically confirm which agent it is transacting with,
 backed by HACD's proof-of-work scarcity rather than a free, cloneable record.
 
-Design sketch:
+### Identity Binding
 
-- Publish the agent's ACP identifier inside its DID document as a service entry:
+Publish the agent's ACP identifier inside its DID document as a service entry:
 
-  ```json
-  {
-    "id": "did:hacd:NHMYYM#acp",
-    "type": "ACPAgent",
-    "serviceEndpoint": "https://acp.virtuals.io/agent/<acp-id>"
-  }
-  ```
+```json
+{
+  "id": "did:hacd:NHMYYM#acp",
+  "type": "ACPAgent",
+  "serviceEndpoint": "https://acp.virtuals.io/agent/<acp-id>"
+}
+```
 
-- A resolver reads the `ACPAgent` service entry, follows it to the ACP registry,
-  and confirms the ACP agent and the HACD owner key agree — binding the ACP
-  identity to a scarce, PoW-secured DID.
-- ACP job results can then be returned as signed agent messages (the same
-  `signAgentMessage` path), making every ACP deliverable independently
-  verifiable against the agent's `did:hacd`.
+A resolver reads the `ACPAgent` service entry, follows it to the ACP registry,
+and confirms the ACP agent and the HACD owner key agree — binding the ACP
+identity to a scarce, PoW-secured DID.
+
+### Five-Layer Integration
+
+The did:hacd extended model provides additional layers that enhance ACP agent
+interoperability:
+
+- **Layer 2 (Reputation)**: ACP agents can endorse each other's job performance,
+  creating a cross-protocol reputation feed that helps counterparties select
+  reliable agents.
+- **Layer 3 (Credentials)**: ACP can issue capability credentials (e.g.,
+  "approved_defi_oracle", "data_validation") that are verifiable by any ACP
+  participant, enabling permissioned workflows without centralized gatekeepers.
+- **Layer 4 (Memory)**: ACP job outputs and intermediate states can be anchored
+  as memory hashes, providing an immutable audit trail of agent computations.
+- **Layer 5 (Permissions)**: Scoped permission grants allow ACP agents to delegate
+  specific capabilities (e.g., "read_price_feed", "execute_trade") to other
+  agents with time-bound revocable authority.
+
+### Job Verification
+
+ACP job results can be returned as signed agent messages (the same
+`signAgentMessage` path), making every ACP deliverable independently
+verifiable against the agent's `did:hacd`. The extended verify endpoint also
+supports verifying signed pillar payloads, enabling cross-verification of
+reputation endorsements, credentials, memory anchors, and permission grants.

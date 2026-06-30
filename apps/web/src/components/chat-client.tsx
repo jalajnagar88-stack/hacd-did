@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface AgentMeta {
@@ -9,6 +9,13 @@ interface AgentMeta {
   name: string;
   model: string;
   samplePrompt?: string;
+}
+
+interface PillarData {
+  reputation: any | null;
+  credentials: any | null;
+  memory: any | null;
+  permissions: any | null;
 }
 
 interface ChatMessage {
@@ -80,7 +87,30 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<number | null>(null);
+  const [pillars, setPillars] = useState<PillarData>({
+    reputation: null,
+    credentials: null,
+    memory: null,
+    permissions: null,
+  });
   const listEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchPillars = async () => {
+      try {
+        const [reputation, credentials, memory, permissions] = await Promise.all([
+          fetch(`/api/reputation/${agent.did}`).then(r => r.json()).catch(() => null),
+          fetch(`/api/credentials/${agent.did}`).then(r => r.json()).catch(() => null),
+          fetch(`/api/memory/${agent.did}`).then(r => r.json()).catch(() => null),
+          fetch(`/api/permissions/${agent.did}`).then(r => r.json()).catch(() => null),
+        ]);
+        setPillars({ reputation, credentials, memory, permissions });
+      } catch {
+        // Silently fail on pillar fetch
+      }
+    };
+    void fetchPillars();
+  }, [agent.did]);
 
   async function send(text: string) {
     const trimmed = text.trim();
@@ -137,7 +167,7 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-3xl flex-col px-6">
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-6">
       {/* Sticky header */}
       <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-border bg-background/85 py-4 backdrop-blur">
         <div className="flex items-center gap-3">
@@ -165,50 +195,135 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
         </div>
       </header>
 
-      {/* Messages */}
-      <div className="flex-1 space-y-5 py-8">
-        {messages.length === 0 && (
-          <button
-            onClick={() => void send(agent.samplePrompt ?? 'Introduce yourself.')}
-            className="rounded-lg border border-dashed border-border px-4 py-3 text-left text-sm text-muted-foreground transition-colors hover:border-gold hover:text-foreground"
-          >
-            Ask {agent.name}: &ldquo;{agent.samplePrompt ?? 'Introduce yourself.'}&rdquo;
-          </button>
-        )}
-
-        {messages.map((msg, i) =>
-          msg.role === 'user' ? (
-            <div key={i} className="flex justify-end">
-              <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-gold/15 px-4 py-2.5 text-sm">
-                {msg.content}
-              </div>
-            </div>
-          ) : (
-            <div key={i} className="flex flex-col items-start">
-              <div className="max-w-[90%] rounded-2xl rounded-bl-sm border border-border bg-card px-4 py-3 text-sm leading-relaxed">
-                {renderContent(msg.content)}
-              </div>
-              <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 pl-1 text-xs text-muted-foreground">
-                <span>{msg.signedAt ? new Date(msg.signedAt).toLocaleTimeString() : ''}</span>
-                <span className="font-mono">Signed by {agent.did}</span>
-                <Link href="/verify" className="text-gold hover:underline">
-                  Verify
+      <div className="flex flex-1 gap-6 py-8">
+        {/* Sidebar with five-layer summaries */}
+        <aside className="hidden w-64 shrink-0 lg:block">
+          <div className="sticky top-24 space-y-4">
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              Agent Layers
+            </h3>
+            <div className="space-y-2">
+              <Link
+                href={`/anatomy/${agent.did}`}
+                className="block rounded border border-border bg-card p-3 text-sm transition-colors hover:border-gold"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-foreground">Identity</span>
+                  <span className="text-xs text-muted-foreground">Layer 1</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">PoW-anchored DID</p>
+              </Link>
+              {pillars.reputation && !pillars.reputation.status && (
+                <Link
+                  href={`/anatomy/${agent.did}`}
+                  className="block rounded border border-border bg-card p-3 text-sm transition-colors hover:border-gold"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-foreground">Reputation</span>
+                    <span className="text-xs text-muted-foreground">Layer 2</span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Score: {pillars.reputation.aggregate.rawScore.toFixed(1)}
+                  </p>
                 </Link>
-                <button onClick={() => copyProof(msg, i)} className="text-gold hover:underline">
-                  {copied === i ? 'Copied' : 'Copy proof'}
-                </button>
-              </div>
+              )}
+              {pillars.credentials && !pillars.credentials.status && (
+                <Link
+                  href={`/anatomy/${agent.did}`}
+                  className="block rounded border border-border bg-card p-3 text-sm transition-colors hover:border-gold"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-foreground">Credentials</span>
+                    <span className="text-xs text-muted-foreground">Layer 3</span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {pillars.credentials.issued.length} issued · {pillars.credentials.held.length} held
+                  </p>
+                </Link>
+              )}
+              {pillars.memory && !pillars.memory.status && (
+                <Link
+                  href={`/anatomy/${agent.did}`}
+                  className="block rounded border border-border bg-card p-3 text-sm transition-colors hover:border-gold"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-foreground">Memory</span>
+                    <span className="text-xs text-muted-foreground">Layer 4</span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {pillars.memory.anchors.length} anchors
+                  </p>
+                </Link>
+              )}
+              {pillars.permissions && !pillars.permissions.status && (
+                <Link
+                  href={`/anatomy/${agent.did}`}
+                  className="block rounded border border-border bg-card p-3 text-sm transition-colors hover:border-gold"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-foreground">Permissions</span>
+                    <span className="text-xs text-muted-foreground">Layer 5</span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {pillars.permissions.granted.length} granted · {pillars.permissions.received.length} received
+                  </p>
+                </Link>
+              )}
+              <Link
+                href={`/anatomy/${agent.did}`}
+                className="block rounded border border-gold/50 bg-card p-3 text-center text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-background"
+              >
+                View full anatomy →
+              </Link>
             </div>
-          ),
-        )}
+          </div>
+        </aside>
 
-        {loading && <p className="pl-1 text-sm text-muted-foreground">{agent.name} is thinking…</p>}
-        {error && (
-          <p className="rounded-md border border-red-900/60 bg-red-950/30 px-4 py-2 text-sm text-red-300">
-            {error}
-          </p>
-        )}
-        <div ref={listEndRef} />
+        {/* Messages */}
+        <div className="flex-1 space-y-5">
+          {messages.length === 0 && (
+            <button
+              onClick={() => void send(agent.samplePrompt ?? 'Introduce yourself.')}
+              className="rounded-lg border border-dashed border-border px-4 py-3 text-left text-sm text-muted-foreground transition-colors hover:border-gold hover:text-foreground"
+            >
+              Ask {agent.name}: &ldquo;{agent.samplePrompt ?? 'Introduce yourself.'}&rdquo;
+            </button>
+          )}
+
+          {messages.map((msg, i) =>
+            msg.role === 'user' ? (
+              <div key={i} className="flex justify-end">
+                <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-gold/15 px-4 py-2.5 text-sm">
+                  {msg.content}
+                </div>
+              </div>
+            ) : (
+              <div key={i} className="flex flex-col items-start">
+                <div className="max-w-[90%] rounded-2xl rounded-bl-sm border border-border bg-card px-4 py-3 text-sm leading-relaxed">
+                  {renderContent(msg.content)}
+                </div>
+                <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 pl-1 text-xs text-muted-foreground">
+                  <span>{msg.signedAt ? new Date(msg.signedAt).toLocaleTimeString() : ''}</span>
+                  <span className="font-mono">Signed by {agent.did}</span>
+                  <Link href="/verify" className="text-gold hover:underline">
+                    Verify
+                  </Link>
+                  <button onClick={() => copyProof(msg, i)} className="text-gold hover:underline">
+                    {copied === i ? 'Copied' : 'Copy proof'}
+                  </button>
+                </div>
+              </div>
+            ),
+          )}
+
+          {loading && <p className="pl-1 text-sm text-muted-foreground">{agent.name} is thinking…</p>}
+          {error && (
+            <p className="rounded-md border border-red-900/60 bg-red-950/30 px-4 py-2 text-sm text-red-300">
+              {error}
+            </p>
+          )}
+          <div ref={listEndRef} />
+        </div>
       </div>
 
       {/* Sticky composer */}

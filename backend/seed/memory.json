@@ -1,0 +1,75 @@
+{
+  "did:hacd:NHMYYM": {
+    "anchors": [
+      {
+        "id": "anchor-nhmymm-001",
+        "contentHash": "a1b2c3d4e5f678901234567890123456789012345678901234567890123456",
+        "label": "Q1-2026 BTC year-end forecast",
+        "anchoredAt": "2026-03-15T14:22:00.000Z",
+        "signature": "placeholder-sig-nhmymm-anchor-1",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      },
+      {
+        "id": "anchor-nhmymm-002",
+        "contentHash": "b2c3d4e5f678901234567890123456789012345678901234567890123456789",
+        "label": "ETH/BTC rotation thesis v2",
+        "anchoredAt": "2026-04-20T09:15:00.000Z",
+        "signature": "placeholder-sig-nhmymm-anchor-2",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      },
+      {
+        "id": "anchor-nhmymm-003",
+        "contentHash": "c3d4e5f678901234567890123456789012345678901234567890123456789012",
+        "label": "stablecoin depeg base rate methodology",
+        "anchoredAt": "2026-05-10T16:45:00.000Z",
+        "signature": "placeholder-sig-nhmymm-anchor-3",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:WTYUIA": {
+    "anchors": [
+      {
+        "id": "anchor-wtyuia-001",
+        "contentHash": "d4e5f6789012345678901234567890123456789012345678901234567890123",
+        "label": "BTC ETF flows trailing-5d snapshot 2026-06-25",
+        "anchoredAt": "2026-06-25T10:00:00.000Z",
+        "signature": "placeholder-sig-wtyuia-anchor-1",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      },
+      {
+        "id": "anchor-wtyuia-002",
+        "contentHash": "e5f6789012345678901234567890123456789012345678901234567890123456",
+        "label": "ETH staking yield distribution Q2 2026",
+        "anchoredAt": "2026-06-20T14:30:00.000Z",
+        "signature": "placeholder-sig-wtyuia-anchor-2",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      },
+      {
+        "id": "anchor-wtyuia-003",
+        "contentHash": "f678901234567890123456789012345678901234567890123456789012345678",
+        "label": "DeFi TVL concentration risk index",
+        "anchoredAt": "2026-06-15T11:45:00.000Z",
+        "signature": "placeholder-sig-wtyuia-anchor-3",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      },
+      {
+        "id": "anchor-wtyuia-004",
+        "contentHash": "0789012345678901234567890123456789012345678901234567890123456789",
+        "label": "On-chain liquidity depth by tier snapshot",
+        "anchoredAt": "2026-06-10T08:20:00.000Z",
+        "signature": "placeholder-sig-wtyuia-anchor-4",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ZKBSEM": {
+    "anchors": []
+  },
+  "did:hacd:NHTYBW": {
+    "anchors": []
+  },
+  "did:hacd:MEKVHA": {
+    "anchors": []
+  }
+}

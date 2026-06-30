@@ -111,6 +111,31 @@ function builtinService(profile: AgentProfile, did: string): ServiceEndpoint {
   };
 }
 
+function pillarServices(did: string): ServiceEndpoint[] {
+  return [
+    {
+      id: `${did}#reputation`,
+      type: 'ReputationFeed',
+      serviceEndpoint: `/api/reputation/${did}`,
+    },
+    {
+      id: `${did}#credentials`,
+      type: 'CredentialRegistry',
+      serviceEndpoint: `/api/credentials/${did}`,
+    },
+    {
+      id: `${did}#memory`,
+      type: 'MemoryAnchor',
+      serviceEndpoint: `/api/memory/${did}`,
+    },
+    {
+      id: `${did}#permissions`,
+      type: 'PermissionGrant',
+      serviceEndpoint: `/api/permissions/${did}`,
+    },
+  ];
+}
+
 /** Publishes a built-in agent to the chain using (and persisting) stable keys. */
 function publishBuiltin(
   reg: {
@@ -130,7 +155,7 @@ function publishBuiltin(
   const baseDoc = buildDidDocument({
     inscription: profile.inscription,
     publicKeyMultibase: entry.owner.publicKeyMultibase,
-    services: [builtinService(profile, did)],
+    services: [builtinService(profile, did), ...pillarServices(did)],
   });
 
   // Add the runtime signing key as a second verification method.
@@ -291,6 +316,7 @@ export function registerMintedAgent(input: {
       runtimeVerificationMethod(did, runtime.publicKeyMultibase),
     ],
     assertionMethod: [...input.document.assertionMethod, `${did}${RUNTIME_KID}`],
+    service: [...(input.document.service || []), ...pillarServices(did)],
   };
 
   reg.keystore[input.inscription] = {

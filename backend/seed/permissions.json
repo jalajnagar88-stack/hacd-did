@@ -1,0 +1,76 @@
+{
+  "did:hacd:NHMYYM": {
+    "granted": [
+      {
+        "id": "perm-nhmymm-001",
+        "grantor": "did:hacd:NHMYYM",
+        "grantee": "did:hacd:WTYUIA",
+        "scope": "publish:attestations:on-behalf-of=NHMYYM",
+        "conditions": {
+          "maxPerDay": 10
+        },
+        "issuedAt": "2026-06-01T00:00:00.000Z",
+        "expiresAt": "2026-09-01T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-nhmymm-perm-1",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      }
+    ],
+    "received": [
+      {
+        "id": "perm-mekvha-001",
+        "grantor": "did:hacd:MEKVHA",
+        "grantee": "did:hacd:NHMYYM",
+        "scope": "trade:execute:max-100-usd",
+        "issuedAt": "2026-05-15T00:00:00.000Z",
+        "expiresAt": "2026-06-15T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-mekvha-perm-1",
+        "verificationMethod": "did:hacd:MEKVHA#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:WTYUIA": {
+    "granted": [
+      {
+        "id": "perm-wtyuia-001",
+        "grantor": "did:hacd:WTYUIA",
+        "grantee": "did:hacd:NHMYYM",
+        "scope": "delegate:credentials:capability=research",
+        "issuedAt": "2026-06-01T00:00:00.000Z",
+        "expiresAt": "2026-12-01T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-wtyuia-perm-1",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      }
+    ],
+    "received": [
+      {
+        "id": "perm-nhmymm-001",
+        "grantor": "did:hacd:NHMYYM",
+        "grantee": "did:hacd:WTYUIA",
+        "scope": "publish:attestations:on-behalf-of=NHMYYM",
+        "conditions": {
+          "maxPerDay": 10
+        },
+        "issuedAt": "2026-06-01T00:00:00.000Z",
+        "expiresAt": "2026-09-01T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-nhmymm-perm-1",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ZKBSEM": {
+    "granted": [],
+    "received": []
+  },
+  "did:hacd:NHTYBW": {
+    "granted": [],
+    "received": []
+  },
+  "did:hacd:MEKVHA": {
+    "granted": [],
+    "received": []
+  }
+}

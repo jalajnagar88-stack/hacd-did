@@ -1,8 +1,8 @@
 # The did:hacd Method Specification
 
-**Version:** 0.1 (draft)
+**Version:** 0.2 (draft)
 **Status:** Working Draft
-**Date:** 2026-06-29
+**Date:** 2026-06-30
 
 This document specifies the `hacd` Decentralized Identifier (DID) method. It
 follows the conventions of [W3C DID Core 1.0][did-core] and
@@ -114,6 +114,212 @@ document produced by the reference SDK is:
 - At least one verification method MUST be present.
 - `service` entries MAY advertise agent endpoints (e.g. an autonomous-agent API,
   an A2A endpoint, or an attestation feed).
+
+---
+
+## 4.1 Extended DID Document Model for Autonomous Agents
+
+The `did:hacd` method extends the base DID Document model to support the full lifecycle of autonomous agents beyond identity. Four extension pillars — Reputation, Credentials, Memory, and Permissions — are expressed as W3C-compliant `service` entries, each pointing to a signed, resolvable JSON payload. This design maintains W3C compliance while enabling recursive verifiability across the agent ecosystem.
+
+### 4.1.1 ReputationFeed
+
+Reputation represents signed endorsements from other DIDs, with time-decayed aggregation to reflect current trustworthiness.
+
+```json
+{
+  "id": "did:hacd:NHMYYM#reputation",
+  "type": "ReputationFeed",
+  "serviceEndpoint": "/api/reputation/did:hacd:NHMYYM"
+}
+```
+
+**Endpoint response shape:**
+
+```json
+{
+  "did": "did:hacd:NHMYYM",
+  "endorsements": [
+    {
+      "from": "did:hacd:WTYUIA",
+      "weight": 0.9,
+      "basis": "reliable attestation cadence; no missed publications since registration",
+      "issuedAt": "2026-06-15T10:30:00.000Z",
+      "signature": "base64url-ed25519-signature",
+      "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+    }
+  ],
+  "aggregate": {
+    "rawScore": 85.5,
+    "decayedScore": 78.2,
+    "endorserCount": 5,
+    "lastUpdated": "2026-06-30T00:00:00.000Z"
+  }
+}
+```
+
+**Aggregate score logic:**
+- `rawScore` = sum of all endorsement weights, capped at 100
+- `decayedScore` = sum(endorsement.weight × exp(-ageInDays/30))
+- `endorserCount` = unique count of endorsing DIDs
+
+Each endorsement is independently verifiable by resolving the `from` DID and checking the signature against the issuer's verification method.
+
+**Self-endorsement filtering:** Endorsements where `from` equals the subject DID MUST be rejected at write time.
+
+### 4.1.2 CredentialRegistry
+
+Credentials represent W3C-style Verifiable Credentials issued between agents, attesting to capabilities or claims.
+
+```json
+{
+  "id": "did:hacd:NHMYYM#credentials",
+  "type": "CredentialRegistry",
+  "serviceEndpoint": "/api/credentials/did:hacd:NHMYYM"
+}
+```
+
+**Endpoint response shape:**
+
+```json
+{
+  "did": "did:hacd:NHMYYM",
+  "issued": [
+    {
+      "@context": ["https://www.w3.org/2018/credentials/v1"],
+      "type": ["VerifiableCredential"],
+      "issuer": "did:hacd:NHMYYM",
+      "credentialSubject": {
+        "id": "did:hacd:WTYUIA",
+        "claim": "attestation-publishing capability",
+        "capability": "attestation-publishing"
+      },
+      "issuanceDate": "2026-06-01T00:00:00.000Z",
+      "expirationDate": "2026-12-31T23:59:59.999Z",
+      "proof": {
+        "type": "Ed25519Signature2020",
+        "created": "2026-06-01T00:00:00.000Z",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1",
+        "jws": "base64url-jws"
+      }
+    }
+  ],
+  "held": [
+    {
+      "@context": ["https://www.w3.org/2018/credentials/v1"],
+      "type": ["VerifiableCredential"],
+      "issuer": "did:hacd:NHTYBW",
+      "credentialSubject": {
+        "id": "did:hacd:NHMYYM",
+        "claim": "verified analyst 2026",
+        "capability": "verified-analyst"
+      },
+      "issuanceDate": "2026-01-15T00:00:00.000Z",
+      "proof": {
+        "type": "Ed25519Signature2020",
+        "created": "2026-01-15T00:00:00.000Z",
+        "verificationMethod": "did:hacd:NHTYBW#agent-runtime-1",
+        "jws": "base64url-jws"
+      }
+    }
+  ]
+}
+```
+
+Each credential is signed by the issuer's runtime key and verifiable by resolving the issuer's DID Document.
+
+### 4.1.3 MemoryAnchor
+
+Memory anchors represent claim-of-authorship for content artifacts. The agent signs a content hash with a timestamp, proving it produced that content at that time. No content is stored — only the cryptographic commitment.
+
+```json
+{
+  "id": "did:hacd:NHMYYM#memory",
+  "type": "MemoryAnchor",
+  "serviceEndpoint": "/api/memory/did:hacd:NHMYYM"
+}
+```
+
+**Endpoint response shape:**
+
+```json
+{
+  "did": "did:hacd:NHMYYM",
+  "anchors": [
+    {
+      "id": "anchor-001",
+      "contentHash": "a1b2c3d4e5f6...",
+      "label": "Q1-2026 BTC year-end forecast",
+      "anchoredAt": "2026-03-15T14:22:00.000Z",
+      "signature": "base64url-ed25519-signature",
+      "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+    }
+  ]
+}
+```
+
+If the content surfaces later anywhere, the timestamped signature proves the agent authored it. The hash uses SHA-256.
+
+### 4.1.4 PermissionGrant
+
+Permissions represent scoped, time-bounded capability grants between agents, enabling delegation and access control.
+
+```json
+{
+  "id": "did:hacd:NHMYYM#permissions",
+  "type": "PermissionGrant",
+  "serviceEndpoint": "/api/permissions/did:hacd:NHMYYM"
+}
+```
+
+**Endpoint response shape:**
+
+```json
+{
+  "did": "did:hacd:NHMYYM",
+  "granted": [
+    {
+      "id": "perm-001",
+      "grantor": "did:hacd:NHMYYM",
+      "grantee": "did:hacd:WTYUIA",
+      "scope": "publish:attestations:on-behalf-of=NHMYYM",
+      "conditions": {
+        "maxPerDay": 10
+      },
+      "issuedAt": "2026-06-01T00:00:00.000Z",
+      "expiresAt": "2026-09-01T00:00:00.000Z",
+      "revoked": false,
+      "signature": "base64url-ed25519-signature",
+      "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+    }
+  ],
+  "received": [
+    {
+      "id": "perm-002",
+      "grantor": "did:hacd:MEKVHA",
+      "grantee": "did:hacd:NHMYYM",
+      "scope": "trade:execute:max-100-usd",
+      "issuedAt": "2026-05-15T00:00:00.000Z",
+      "expiresAt": "2026-08-15T00:00:00.000Z",
+      "revoked": false,
+      "signature": "base64url-ed25519-signature",
+      "verificationMethod": "did:hacd:MEKVHA#agent-runtime-1"
+    }
+  ]
+}
+```
+
+Example scopes: `trade:execute:max-1000-usd`, `publish:attestations`, `delegate:credentials:capability=research`. Permissions are verifiable against the grantor's DID Document.
+
+### 4.1.5 Design Notes
+
+**Why service entries vs new top-level fields?**
+Using W3C `service` entries keeps the DID Document compliant with the DID Core specification. Existing DID resolvers and tooling can parse the document without modification, while custom-aware clients can discover and use the extensions.
+
+**Why decoupled endpoints?**
+Each pillar (reputation, credentials, memory, permissions) can scale independently. Reputation may have high read throughput, memory anchors may be append-heavy, and permissions may require frequent revocation checks. Separate endpoints allow targeted caching, rate limiting, and storage optimization per pillar.
+
+**Why everything is signed by resolvable DIDs?**
+Recursive verifiability is a core design principle. Every endorsement, credential, memory anchor, and permission is signed by a DID that can itself be resolved and verified. This creates a trust chain that can be followed all the way down to the PoW-anchored HACD identity, with no need for a centralized trust anchor.
 
 ---
 

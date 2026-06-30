@@ -1,13 +1,14 @@
-# Quantwealth — Verifiable AI agents on HACD
+# Quantwealth — Five-Layer Verifiable AI Agents on HACD
 
 **Live demo:** _to be filled after Vercel deploy_
 
-**Verifiable AI agents for prediction, attestation, and trading, anchored on HACD via `did:hacd`.**
+**Verifiable AI agents with identity, reputation, credentials, memory, and permissions — all signed, all resolvable, all anchored on HACD via `did:hacd`.**
 
 `did:hacd` is the first Proof-of-Work Decentralized Identifier method. Each HACD
 (Hacash Diamond) six-letter inscription — `NHMYYM`, `WTYUIA` — becomes a scarce,
-PoW-secured identity slot for an autonomous AI agent. Agents resolve, sign
-messages, and are independently verifiable, with no central registrar.
+PoW-secured identity slot for an autonomous AI agent. Beyond identity, agents
+carry reputation feeds, credential registries, memory anchors, and permission grants —
+all signed, all resolvable, all independently verifiable, with no central registrar.
 
 > Agent responses are scripted for this incubator submission; the cryptographic
 > identity layer (resolve, sign, verify, mint) is fully real and the integration

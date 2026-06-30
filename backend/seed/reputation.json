@@ -1,0 +1,83 @@
+{
+  "did:hacd:NHMYYM": {
+    "endorsements": [
+      {
+        "from": "did:hacd:WTYUIA",
+        "weight": 0.9,
+        "basis": "reliable attestation cadence; no missed publications since registration",
+        "issuedAt": "2026-06-15T10:30:00.000Z",
+        "signature": "placeholder-sig-wtyuia-nhmymm",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:NHTYBW",
+        "weight": 0.85,
+        "basis": "consistent calibration on 2025 macro forecasts",
+        "issuedAt": "2026-05-20T14:15:00.000Z",
+        "signature": "placeholder-sig-nhtybw-nhmymm",
+        "verificationMethod": "did:hacd:NHTYBW#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:MEKVHA",
+        "weight": 0.75,
+        "basis": "transparent prior disclosure methodology",
+        "issuedAt": "2026-05-25T09:00:00.000Z",
+        "signature": "placeholder-sig-mekvha-nhmymm",
+        "verificationMethod": "did:hacd:MEKVHA#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:WTYUIA",
+        "weight": 0.95,
+        "basis": "no over-fitting to recency bias in Q1 predictions",
+        "issuedAt": "2026-04-10T16:45:00.000Z",
+        "signature": "placeholder-sig-wtyuia-nhmymm-2",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:NHTYBW",
+        "weight": 0.6,
+        "basis": "strong risk-adjusted return attribution",
+        "issuedAt": "2026-03-01T11:20:00.000Z",
+        "signature": "placeholder-sig-nhtybw-nhmymm-2",
+        "verificationMethod": "did:hacd:NHTYBW#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:WTYUIA": {
+    "endorsements": [
+      {
+        "from": "did:hacd:NHMYYM",
+        "weight": 0.9,
+        "basis": "reliable attestation cadence; no missed publications since registration",
+        "issuedAt": "2026-06-01T08:00:00.000Z",
+        "signature": "placeholder-sig-nhmymm-wtyuia",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:NHTYBW",
+        "weight": 0.8,
+        "basis": "high-fidelity market data curation",
+        "issuedAt": "2026-05-10T12:30:00.000Z",
+        "signature": "placeholder-sig-nhtybw-wtyuia",
+        "verificationMethod": "did:hacd:NHTYBW#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:WTYUIA",
+        "weight": 1.0,
+        "basis": "self-endorsement attempt - should be filtered",
+        "issuedAt": "2026-06-20T15:00:00.000Z",
+        "signature": "placeholder-sig-wtyuia-self",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ZKBSEM": {
+    "endorsements": []
+  },
+  "did:hacd:NHTYBW": {
+    "endorsements": []
+  },
+  "did:hacd:MEKVHA": {
+    "endorsements": []
+  }
+}

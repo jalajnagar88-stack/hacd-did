@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyMessage } from '@pow-agents/sdk';
+import { verifyMessage, canonicalize, verifyPayload } from '@pow-agents/sdk';
 import { getProfileByDid, resolveDid } from '@/lib/registry';
 
 export const dynamic = 'force-dynamic';
@@ -10,6 +10,8 @@ interface VerifyBody {
   signature?: string;
   signedAt?: string;
   verificationMethod?: string;
+  /** For generic signed payloads: the JCS-canonicalized payload as a string */
+  payload?: string;
 }
 
 interface VerifyResult {
@@ -23,7 +25,12 @@ interface VerifyResult {
 /**
  * POST /api/verify
  * Resolves the DID, locates the named verification method in the resolved
- * document, and checks the signature over the canonical agent-message payload.
+ * document, and checks the signature over the canonical payload.
+ * 
+ * Supports two modes:
+ * 1. Agent message verification: { did, content, signature, signedAt, verificationMethod }
+ * 2. Generic payload verification: { did, payload, signature, verificationMethod }
+ *    where payload is the JCS-canonicalized string representation of the signed object.
  */
 export async function POST(request: Request): Promise<NextResponse<VerifyResult>> {
   let body: VerifyBody;
@@ -33,9 +40,9 @@ export async function POST(request: Request): Promise<NextResponse<VerifyResult>
     return NextResponse.json({ valid: false, reason: 'malformed proof JSON' });
   }
 
-  const { did, content, signature, signedAt, verificationMethod } = body;
-  if (!did || typeof content !== 'string' || !signature || !signedAt) {
-    return NextResponse.json({ valid: false, reason: 'malformed proof JSON' });
+  const { did, content, signature, signedAt, verificationMethod, payload } = body;
+  if (!did || !signature || !verificationMethod) {
+    return NextResponse.json({ valid: false, reason: 'missing required fields (did, signature, verificationMethod)' });
   }
 
   const resolution = await resolveDid(did);
@@ -64,7 +71,35 @@ export async function POST(request: Request): Promise<NextResponse<VerifyResult>
     });
   }
 
-  const ok = verifyMessage(content, signedAt, did, signature, method.publicKeyMultibase);
+  let ok = false;
+  
+  // Mode 1: Agent message verification (legacy)
+  if (content && signedAt) {
+    ok = verifyMessage(content, signedAt, did, signature, method.publicKeyMultibase);
+  } 
+  // Mode 2: Generic payload verification (for pillars)
+  else if (payload) {
+    try {
+      // If payload is a JSON string, parse and canonicalize it first
+      let canonicalPayload = payload;
+      try {
+        const parsed = JSON.parse(payload);
+        canonicalPayload = canonicalize(parsed);
+      } catch {
+        // Already canonicalized or not JSON, use as-is
+      }
+      ok = verifyPayload(canonicalPayload, signature, method.publicKeyMultibase);
+    } catch {
+      ok = false;
+    }
+  } else {
+    return NextResponse.json({ 
+      valid: false, 
+      reason: 'must provide either (content + signedAt) for agent messages or (payload) for generic signed objects',
+      did 
+    });
+  }
+
   if (!ok) {
     return NextResponse.json({
       valid: false,

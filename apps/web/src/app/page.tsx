@@ -41,9 +41,7 @@ export default function Home() {
             Anchored on Proof-of-Work.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            did:hacd is the first PoW-secured Decentralized Identifier. Each of the world&apos;s
-            ~16.7 million HACDs becomes a sovereign identity slot for an autonomous agent. Resolve,
-            sign, verify — no central registrar.
+            did:hacd is more than identity. It is reputation, credentials, memory, and permissions — all signed, all resolvable, all anchored on Proof-of-Work.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -57,6 +55,12 @@ export default function Home() {
               className="rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-gold"
             >
               Chat with PolyMind
+            </Link>
+            <Link
+              href="/anatomy/did:hacd:NHMYYM"
+              className="rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-gold"
+            >
+              See an agent anatomy →
             </Link>
           </div>
         </div>
