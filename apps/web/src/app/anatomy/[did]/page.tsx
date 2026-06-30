@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { Skeleton, CardSkeleton } from '@/components/skeleton';
 
 interface PillarData {
   reputation: any | null;
@@ -70,8 +71,25 @@ export default function AnatomyPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted-foreground">Loading agent anatomy...</div>
+      <div className="min-h-screen bg-background">
+        <div className="border-b border-border bg-card">
+          <div className="mx-auto max-w-7xl px-4 py-6">
+            <Skeleton className="h-6 w-64 mx-auto" />
+          </div>
+        </div>
+        <div className="mx-auto max-w-7xl px-4 py-12">
+          <div className="mb-12 text-center">
+            <Skeleton className="mb-4 h-24 w-48 mx-auto" />
+            <Skeleton className="mb-2 h-6 w-96 mx-auto" />
+            <Skeleton className="mb-1 h-8 w-48 mx-auto" />
+            <Skeleton className="h-5 w-32 mx-auto" />
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

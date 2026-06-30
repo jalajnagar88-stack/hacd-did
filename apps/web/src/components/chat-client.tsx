@@ -2,6 +2,8 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Copy, X, Menu, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface AgentMeta {
   did: string;
@@ -93,6 +95,7 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
     memory: null,
     permissions: null,
   });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const listEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -131,7 +134,15 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
       });
       const data = (await res.json()) as ProofResponse;
       if (!res.ok) {
-        setError(data.error ?? `request failed (${res.status})`);
+        if (res.status === 404) {
+          setError('Agent not found. The agent may have been deactivated.');
+        } else if (res.status === 429) {
+          setError('Too many requests. Please wait a moment before trying again.');
+        } else if (res.status === 500) {
+          setError('Server error. Please try again later.');
+        } else {
+          setError(data.error ?? `Request failed (${res.status}). Please try again.`);
+        }
       } else {
         setMessages((prev) => [
           ...prev,
@@ -144,8 +155,12 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
           },
         ]);
       }
-    } catch {
-      setError('network error');
+    } catch (err) {
+      if (err instanceof TypeError && err.message.includes('fetch')) {
+        setError('Network error. Please check your connection and try again.');
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setLoading(false);
       requestAnimationFrame(() => listEndRef.current?.scrollIntoView({ behavior: 'smooth' }));
@@ -163,7 +178,7 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
     };
     void navigator.clipboard.writeText(JSON.stringify(proof, null, 2));
     setCopied(index);
-    setTimeout(() => setCopied(null), 1500);
+    setTimeout(() => setCopied(null), 2000);
   }
 
   return (
@@ -196,10 +211,31 @@ export function ChatClient({ agent }: { agent: AgentMeta }) {
       </header>
 
       <div className="flex flex-1 gap-6 py-8">
+        {/* Mobile sidebar toggle */}
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="lg:hidden fixed bottom-4 right-4 z-50 rounded-full bg-gold p-3 text-background shadow-lg"
+        >
+          {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+
         {/* Sidebar with five-layer summaries */}
-        <aside className="hidden w-64 shrink-0 lg:block">
+        <aside
+          className={cn(
+            'fixed inset-y-0 right-0 z-40 w-64 transform border-l border-border bg-card p-6 transition-transform lg:static lg:transform-none lg:border-0 lg:bg-transparent lg:p-0',
+            sidebarOpen ? 'translate-x-0' : 'translate-x-full'
+          )}
+        >
           <div className="sticky top-24 space-y-4">
-            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            <div className="flex items-center justify-between lg:hidden">
+              <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Agent Layers
+              </h3>
+              <button onClick={() => setSidebarOpen(false)} className="text-muted-foreground">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <h3 className="hidden font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground lg:block">
               Agent Layers
             </h3>
             <div className="space-y-2">

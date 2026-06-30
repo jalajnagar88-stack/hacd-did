@@ -53,6 +53,7 @@ export function MintClient() {
   const [savedConfirmed, setSavedConfirmed] = useState(false);
   const [rePaste, setRePaste] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [copiedKey, setCopiedKey] = useState(false);
 
   const inscriptionValid = isValidHacd(inscription);
   const letters = useMemo(() => inscription.padEnd(6, '·').split(''), [inscription]);
@@ -267,10 +268,14 @@ export function MintClient() {
               {keypair.privateKeyBase64Url}
             </code>
             <button
-              onClick={() => void navigator.clipboard.writeText(keypair.privateKeyBase64Url)}
+              onClick={() => {
+                void navigator.clipboard.writeText(keypair.privateKeyBase64Url);
+                setCopiedKey(true);
+                setTimeout(() => setCopiedKey(false), 2000);
+              }}
               className="mt-2 text-xs text-gold hover:underline"
             >
-              Copy private key
+              {copiedKey ? 'Copied!' : 'Copy private key'}
             </button>
           </div>
           <label className="flex items-center gap-2 text-sm">

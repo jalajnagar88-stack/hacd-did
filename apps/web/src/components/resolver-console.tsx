@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { DidResolutionResult } from '@pow-agents/sdk';
 import { cn } from '@/lib/utils';
+import { Skeleton, CardSkeleton } from '@/components/skeleton';
 
 interface ProofStep {
   readonly label: string;
@@ -189,7 +190,39 @@ export function ResolverConsole() {
         ))}
       </div>
 
-      {result && (
+      {loading && (
+        <div className="mt-8 space-y-6">
+          <Skeleton className="h-12 w-full rounded-md" />
+          <div>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              Proof chain
+            </h2>
+            <ol className="space-y-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <li key={i} className="flex items-start gap-3 rounded-md border border-border bg-card px-4 py-3">
+                  <Skeleton className="mt-0.5 h-5 w-5 shrink-0 rounded-full" />
+                  <div className="min-w-0 flex-1">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="mt-2 h-3 w-full" />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              Extended layers
+            </h2>
+            <div className="space-y-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {result && !loading && (
         <div className="mt-8 space-y-6">
           <div
             className={cn(

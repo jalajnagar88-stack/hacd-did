@@ -1,10 +1,12 @@
 import Link from 'next/link';
-import { Gem, Key, ShieldCheck } from 'lucide-react';
+import { Gem, Key, ShieldCheck, Zap, Users, Lock, Play } from 'lucide-react';
 import { SiteNav } from '@/components/site-nav';
 import { Diamond } from '@/components/diamond';
 import { Reveal } from '@/components/reveal';
 import { ResolverConsole } from '@/components/resolver-console';
+import { DemoTour } from '@/components/demo-tour';
 import { FEATURED_AGENTS, chatHref } from '@/lib/featured';
+import { useState } from 'react';
 
 const PILLARS = [
   {
@@ -24,48 +26,118 @@ const PILLARS = [
   },
 ];
 
+const FIVE_LAYERS = [
+  {
+    icon: Lock,
+    title: 'Identity',
+    description: 'PoW-anchored DID with on-chain commitment',
+    color: 'text-gold',
+  },
+  {
+    icon: Users,
+    title: 'Reputation',
+    description: 'Endorsement network with decayed scoring',
+    color: 'text-emerald-400',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Credentials',
+    description: 'Verifiable capability attestations',
+    color: 'text-blue-400',
+  },
+  {
+    icon: Zap,
+    title: 'Memory',
+    description: 'Immutable content hash anchors',
+    color: 'text-purple-400',
+  },
+  {
+    icon: Key,
+    title: 'Permissions',
+    description: 'Scoped, revocable capability grants',
+    color: 'text-orange-400',
+  },
+];
+
 export default function Home() {
+  const [showTour, setShowTour] = useState(false);
+
   return (
     <>
       <SiteNav />
+      <DemoTour isOpen={showTour} onClose={() => setShowTour(false)} />
 
       {/* Hero */}
-      <section className="mx-auto grid min-h-[80vh] max-w-6xl items-center gap-12 px-6 py-16 lg:grid-cols-2">
+      <section className="relative mx-auto grid min-h-[85vh] max-w-6xl items-center gap-12 px-6 py-16 lg:grid-cols-2">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-gold/5 via-transparent to-transparent opacity-50" />
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold">
-            Quantwealth · did:hacd
-          </p>
-          <h1 className="mt-5 font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            Verifiable AI agents.
-            <br />
-            Anchored on Proof-of-Work.
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            did:hacd is more than identity. It is reputation, credentials, memory, and permissions — all signed, all resolvable, all anchored on Proof-of-Work.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/mint"
-              className="rounded-md bg-gold px-6 py-3 text-sm font-medium text-background transition-opacity hover:opacity-90"
-            >
-              Mint your agent
-            </Link>
-            <Link
-              href={chatHref('did:hacd:NHMYYM')}
-              className="rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-gold"
-            >
-              Chat with PolyMind
-            </Link>
-            <Link
-              href="/anatomy/did:hacd:NHMYYM"
-              className="rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-gold"
-            >
-              See an agent anatomy →
-            </Link>
-          </div>
+          <Reveal>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold">
+              Quantwealth · did:hacd
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h1 className="mt-5 font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+              Verifiable AI agents.
+              <br />
+              <span className="text-gold">Anchored on Proof-of-Work.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+              did:hacd is more than identity. It is reputation, credentials, memory, and permissions — all signed, all resolvable, all anchored on Proof-of-Work.
+            </p>
+          </Reveal>
+          <Reveal delay={0.3}>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button
+                onClick={() => setShowTour(true)}
+                className="flex items-center gap-2 rounded-md border border-gold/50 bg-card px-6 py-3 text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-background"
+              >
+                <Play className="h-4 w-4" />
+                Take a tour
+              </button>
+              <Link
+                href="/mint"
+                className="rounded-md bg-gold px-6 py-3 text-sm font-medium text-background transition-opacity hover:opacity-90"
+              >
+                Mint your agent
+              </Link>
+              <Link
+                href={chatHref('did:hacd:NHMYYM')}
+                className="rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-gold"
+              >
+                Chat with PolyMind
+              </Link>
+              <Link
+                href="/anatomy/did:hacd:NHMYYM"
+                className="rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-gold"
+              >
+                See an agent anatomy →
+              </Link>
+            </div>
+          </Reveal>
+          <Reveal delay={0.4}>
+            <div className="mt-10 grid grid-cols-3 gap-6">
+              <div>
+                <div className="font-display text-3xl font-semibold text-gold">16.7M</div>
+                <div className="mt-1 text-xs text-muted-foreground">Possible identities</div>
+              </div>
+              <div>
+                <div className="font-display text-3xl font-semibold text-gold">5</div>
+                <div className="mt-1 text-xs text-muted-foreground">Identity layers</div>
+              </div>
+              <div>
+                <div className="font-display text-3xl font-semibold text-gold">100%</div>
+                <div className="mt-1 text-xs text-muted-foreground">Verifiable</div>
+              </div>
+            </div>
+          </Reveal>
         </div>
         <div className="flex justify-center lg:justify-end">
-          <Diamond />
+          <Reveal delay={0.2}>
+            <Diamond />
+          </Reveal>
         </div>
       </section>
 
@@ -85,6 +157,38 @@ export default function Home() {
             </Reveal>
           ))}
         </div>
+      </section>
+
+      {/* Five layers */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <Reveal>
+          <h2 className="font-display text-3xl font-semibold tracking-tight">Five layers of agent identity</h2>
+          <p className="mt-3 max-w-2xl text-muted-foreground">
+            Beyond basic identity, did:hacd provides a complete framework for agent reputation, credentials, memory, and permissions — all cryptographically verifiable.
+          </p>
+        </Reveal>
+        <div className="mt-10 grid gap-6 md:grid-cols-5">
+          {FIVE_LAYERS.map((layer, i) => (
+            <Reveal key={layer.title} delay={i * 0.1}>
+              <div className="flex h-full flex-col items-center rounded-lg border border-border bg-card p-6 text-center transition-all hover:border-gold/50 hover:shadow-lg">
+                <layer.icon className={`h-8 w-8 ${layer.color}`} />
+                <h3 className="mt-4 font-display text-lg font-semibold">{layer.title}</h3>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{layer.description}</p>
+                <div className="mt-4 text-xs font-mono text-muted-foreground">Layer {i + 1}</div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delay={0.5}>
+          <div className="mt-10 text-center">
+            <Link
+              href="/anatomy/did:hacd:NHMYYM"
+              className="inline-flex items-center gap-2 rounded-md border border-gold/50 bg-card px-6 py-3 text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-background"
+            >
+              Explore full anatomy →
+            </Link>
+          </div>
+        </Reveal>
       </section>
 
       {/* Featured agents */}

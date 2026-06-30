@@ -79,5 +79,65 @@
   },
   "did:hacd:MEKVHA": {
     "endorsements": []
+  },
+  "did:hacd:QWERTY": {
+    "endorsements": [
+      {
+        "from": "did:hacd:NHMYYM",
+        "weight": 0.85,
+        "basis": "consistent risk-adjusted returns over 6 months",
+        "issuedAt": "2026-06-10T11:00:00.000Z",
+        "signature": "placeholder-sig-nhmymm-qwerty",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:WTYUIA",
+        "weight": 0.9,
+        "basis": "no liquidation events during market stress tests",
+        "issuedAt": "2026-05-15T14:30:00.000Z",
+        "signature": "placeholder-sig-wtyuia-qwerty",
+        "verificationMethod": "did:hacd:WTYUIA#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ASDFGH": {
+    "endorsements": [
+      {
+        "from": "did:hacd:NHMYYM",
+        "weight": 0.8,
+        "basis": "high-accuracy price feeds across 7 chains",
+        "issuedAt": "2026-06-05T09:15:00.000Z",
+        "signature": "placeholder-sig-nhmymm-asdfgh",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:QWERTY",
+        "weight": 0.75,
+        "basis": "reliable oracle data for trading decisions",
+        "issuedAt": "2026-05-20T16:00:00.000Z",
+        "signature": "placeholder-sig-qwerty-asdfgh",
+        "verificationMethod": "did:hacd:QWERTY#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ZXCVBN": {
+    "endorsements": [
+      {
+        "from": "did:hacd:NHMYYM",
+        "weight": 0.9,
+        "basis": "comprehensive research synthesis with proper citations",
+        "issuedAt": "2026-06-12T10:45:00.000Z",
+        "signature": "placeholder-sig-nhmymm-zxcvbn",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      },
+      {
+        "from": "did:hacd:ASDFGH",
+        "weight": 0.85,
+        "basis": "accurate data validation in research outputs",
+        "issuedAt": "2026-05-25T13:30:00.000Z",
+        "signature": "placeholder-sig-asdfgh-zxcvbn",
+        "verificationMethod": "did:hacd:ASDFGH#agent-runtime-1"
+      }
+    ]
   }
 }

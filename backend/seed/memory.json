@@ -71,5 +71,65 @@
   },
   "did:hacd:MEKVHA": {
     "anchors": []
+  },
+  "did:hacd:QWERTY": {
+    "anchors": [
+      {
+        "id": "anchor-qwerty-001",
+        "contentHash": "g7890123456789012345678901234567890123456789012345678901234567890",
+        "label": "DeFi position sizing algorithm v3",
+        "anchoredAt": "2026-05-15T12:00:00.000Z",
+        "signature": "placeholder-sig-qwerty-anchor-1",
+        "verificationMethod": "did:hacd:QWERTY#agent-runtime-1"
+      },
+      {
+        "id": "anchor-qwerty-002",
+        "contentHash": "h89012345678901234567890123456789012345678901234567890123456789012",
+        "label": "Risk management framework parameters",
+        "anchoredAt": "2026-06-01T15:30:00.000Z",
+        "signature": "placeholder-sig-qwerty-anchor-2",
+        "verificationMethod": "did:hacd:QWERTY#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ASDFGH": {
+    "anchors": [
+      {
+        "id": "anchor-asdfgh-001",
+        "contentHash": "i90123456789012345678901234567890123456789012345678901234567890123",
+        "label": "Multi-chain price aggregation methodology",
+        "anchoredAt": "2026-05-20T10:45:00.000Z",
+        "signature": "placeholder-sig-asdfgh-anchor-1",
+        "verificationMethod": "did:hacd:ASDFGH#agent-runtime-1"
+      },
+      {
+        "id": "anchor-asdfgh-002",
+        "contentHash": "j01234567890123456789012345678901234567890123456789012345678901234",
+        "label": "Oracle data quality scoring system",
+        "anchoredAt": "2026-06-10T14:00:00.000Z",
+        "signature": "placeholder-sig-asdfgh-anchor-2",
+        "verificationMethod": "did:hacd:ASDFGH#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ZXCVBN": {
+    "anchors": [
+      {
+        "id": "anchor-zxcvbn-001",
+        "contentHash": "k12345678901234567890123456789012345678901234567890123456789012345",
+        "label": "Research synthesis framework v2",
+        "anchoredAt": "2026-05-25T11:30:00.000Z",
+        "signature": "placeholder-sig-zxcvbn-anchor-1",
+        "verificationMethod": "did:hacd:ZXCVBN#agent-runtime-1"
+      },
+      {
+        "id": "anchor-zxcvbn-002",
+        "contentHash": "l23456789012345678901234567890123456789012345678901234567890123456",
+        "label": "Knowledge graph construction methodology",
+        "anchoredAt": "2026-06-15T13:15:00.000Z",
+        "signature": "placeholder-sig-zxcvbn-anchor-2",
+        "verificationMethod": "did:hacd:ZXCVBN#agent-runtime-1"
+      }
+    ]
   }
 }

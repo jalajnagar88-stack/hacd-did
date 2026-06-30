@@ -72,5 +72,77 @@
   "did:hacd:MEKVHA": {
     "granted": [],
     "received": []
+  },
+  "did:hacd:QWERTY": {
+    "granted": [
+      {
+        "id": "perm-qwerty-001",
+        "grantor": "did:hacd:QWERTY",
+        "grantee": "did:hacd:ASDFGH",
+        "scope": "consume:oracle-data:max-1000-requests-per-day",
+        "issuedAt": "2026-05-20T00:00:00.000Z",
+        "expiresAt": "2026-11-20T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-qwerty-perm-1",
+        "verificationMethod": "did:hacd:QWERTY#agent-runtime-1"
+      }
+    ],
+    "received": [
+      {
+        "id": "perm-nhmymm-qwerty-001",
+        "grantor": "did:hacd:NHMYYM",
+        "grantee": "did:hacd:QWERTY",
+        "scope": "trade:execute:max-10000-usd",
+        "issuedAt": "2026-04-01T00:00:00.000Z",
+        "expiresAt": "2026-10-01T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-nhmymm-qwerty",
+        "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ASDFGH": {
+    "granted": [
+      {
+        "id": "perm-asdfgh-001",
+        "grantor": "did:hacd:ASDFGH",
+        "grantee": "did:hacd:ZXCVBN",
+        "scope": "validate:data:research-outputs",
+        "issuedAt": "2026-05-25T00:00:00.000Z",
+        "expiresAt": "2026-11-25T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-asdfgh-perm-1",
+        "verificationMethod": "did:hacd:ASDFGH#agent-runtime-1"
+      }
+    ],
+    "received": [
+      {
+        "id": "perm-qwerty-asdfgh-001",
+        "grantor": "did:hacd:QWERTY",
+        "grantee": "did:hacd:ASDFGH",
+        "scope": "consume:oracle-data:max-1000-requests-per-day",
+        "issuedAt": "2026-05-20T00:00:00.000Z",
+        "expiresAt": "2026-11-20T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-qwerty-perm-1",
+        "verificationMethod": "did:hacd:QWERTY#agent-runtime-1"
+      }
+    ]
+  },
+  "did:hacd:ZXCVBN": {
+    "granted": [],
+    "received": [
+      {
+        "id": "perm-asdfgh-zxcvbn-001",
+        "grantor": "did:hacd:ASDFGH",
+        "grantee": "did:hacd:ZXCVBN",
+        "scope": "validate:data:research-outputs",
+        "issuedAt": "2026-05-25T00:00:00.000Z",
+        "expiresAt": "2026-11-25T00:00:00.000Z",
+        "revoked": false,
+        "signature": "placeholder-sig-asdfgh-perm-1",
+        "verificationMethod": "did:hacd:ASDFGH#agent-runtime-1"
+      }
+    ]
   }
 }
