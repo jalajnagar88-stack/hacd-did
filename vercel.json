@@ -3,5 +3,5 @@
   "buildCommand": "pnpm --filter @pow-agents/sdk build && pnpm --filter @pow-agents/web build",
   "installCommand": "pnpm install",
   "framework": "nextjs",
-  "outputDirectory": "apps/web/.next"
+  "outputDirectory": ".next"
 }
