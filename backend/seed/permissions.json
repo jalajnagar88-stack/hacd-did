@@ -73,75 +73,75 @@
     "granted": [],
     "received": []
   },
-  "did:hacd:QWERTY": {
+  "did:hacd:HXVMET": {
     "granted": [
       {
-        "id": "perm-qwerty-001",
-        "grantor": "did:hacd:QWERTY",
-        "grantee": "did:hacd:ASDFGH",
+        "id": "perm-hxvmet-001",
+        "grantor": "did:hacd:HXVMET",
+        "grantee": "did:hacd:BSKZNY",
         "scope": "consume:oracle-data:max-1000-requests-per-day",
         "issuedAt": "2026-05-20T00:00:00.000Z",
         "expiresAt": "2026-11-20T00:00:00.000Z",
         "revoked": false,
-        "signature": "placeholder-sig-qwerty-perm-1",
-        "verificationMethod": "did:hacd:QWERTY#agent-runtime-1"
+        "signature": "placeholder-sig-hxvmet-perm-1",
+        "verificationMethod": "did:hacd:HXVMET#agent-runtime-1"
       }
     ],
     "received": [
       {
-        "id": "perm-nhmymm-qwerty-001",
+        "id": "perm-nhmymm-hxvmet-001",
         "grantor": "did:hacd:NHMYYM",
-        "grantee": "did:hacd:QWERTY",
+        "grantee": "did:hacd:HXVMET",
         "scope": "trade:execute:max-10000-usd",
         "issuedAt": "2026-04-01T00:00:00.000Z",
         "expiresAt": "2026-10-01T00:00:00.000Z",
         "revoked": false,
-        "signature": "placeholder-sig-nhmymm-qwerty",
+        "signature": "placeholder-sig-nhmymm-hxvmet",
         "verificationMethod": "did:hacd:NHMYYM#agent-runtime-1"
       }
     ]
   },
-  "did:hacd:ASDFGH": {
+  "did:hacd:BSKZNY": {
     "granted": [
       {
-        "id": "perm-asdfgh-001",
-        "grantor": "did:hacd:ASDFGH",
-        "grantee": "did:hacd:ZXCVBN",
+        "id": "perm-bskzny-001",
+        "grantor": "did:hacd:BSKZNY",
+        "grantee": "did:hacd:VMEKHS",
         "scope": "validate:data:research-outputs",
         "issuedAt": "2026-05-25T00:00:00.000Z",
         "expiresAt": "2026-11-25T00:00:00.000Z",
         "revoked": false,
-        "signature": "placeholder-sig-asdfgh-perm-1",
-        "verificationMethod": "did:hacd:ASDFGH#agent-runtime-1"
+        "signature": "placeholder-sig-bskzny-perm-1",
+        "verificationMethod": "did:hacd:BSKZNY#agent-runtime-1"
       }
     ],
     "received": [
       {
-        "id": "perm-qwerty-asdfgh-001",
-        "grantor": "did:hacd:QWERTY",
-        "grantee": "did:hacd:ASDFGH",
+        "id": "perm-hxvmet-bskzny-001",
+        "grantor": "did:hacd:HXVMET",
+        "grantee": "did:hacd:BSKZNY",
         "scope": "consume:oracle-data:max-1000-requests-per-day",
         "issuedAt": "2026-05-20T00:00:00.000Z",
         "expiresAt": "2026-11-20T00:00:00.000Z",
         "revoked": false,
-        "signature": "placeholder-sig-qwerty-perm-1",
-        "verificationMethod": "did:hacd:QWERTY#agent-runtime-1"
+        "signature": "placeholder-sig-hxvmet-perm-1",
+        "verificationMethod": "did:hacd:HXVMET#agent-runtime-1"
       }
     ]
   },
-  "did:hacd:ZXCVBN": {
+  "did:hacd:VMEKHS": {
     "granted": [],
     "received": [
       {
-        "id": "perm-asdfgh-zxcvbn-001",
-        "grantor": "did:hacd:ASDFGH",
-        "grantee": "did:hacd:ZXCVBN",
+        "id": "perm-bskzny-vmekhs-001",
+        "grantor": "did:hacd:BSKZNY",
+        "grantee": "did:hacd:VMEKHS",
         "scope": "validate:data:research-outputs",
         "issuedAt": "2026-05-25T00:00:00.000Z",
         "expiresAt": "2026-11-25T00:00:00.000Z",
         "revoked": false,
-        "signature": "placeholder-sig-asdfgh-perm-1",
-        "verificationMethod": "did:hacd:ASDFGH#agent-runtime-1"
+        "signature": "placeholder-sig-bskzny-perm-1",
+        "verificationMethod": "did:hacd:BSKZNY#agent-runtime-1"
       }
     ]
   }
